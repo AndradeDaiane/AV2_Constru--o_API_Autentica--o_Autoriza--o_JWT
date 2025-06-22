@@ -1,0 +1,67 @@
+# application.yml
+
+# 🚀 Configurações do Servidor Web
+server:
+  port: 8080 # Porta padrão da API
+
+# 🗄️ Configurações do Banco de Dados (H2)
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console # http://localhost:8080/h2-console
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update # ⚠️ NÃO usar em produção
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+# 🔐 Configuração de Segurança (JWT + Spring Security)
+jwt:
+  secret: umaChaveSecretaMuitoLongaEComplexaParaAssinarTokensJWT # Mín. 32 caracteres
+  expiration: 3600000 # 1h em milissegundos
+
+  spring:
+   security:
+    oauth2:
+      resourceserver:
+        jwt:
+          secret-key: ${jwt.secret}
+
+# 📚 Documentação Swagger (Springdoc OpenAPI)
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+  api-docs:
+    path: /v3/api-docs
+
+# 🛠️ DevTools
+
+  spring:
+    devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+
+# 🩺 Actuator - Monitoramento e Métricas
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    enable:
+      all: true
