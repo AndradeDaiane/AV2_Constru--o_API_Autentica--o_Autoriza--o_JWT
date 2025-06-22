@@ -2,7 +2,6 @@ package com.example.demo.config;
 
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -34,32 +33,32 @@ public class SecurityConfig {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    // 🔐 Encoder de senha seguro
+    // 🔐 Codificador de senhas seguro com BCrypt
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // 👤 Serviço para carregar usuários do banco com roles
+    // 👤 Serviço que carrega os dados do usuário a partir do banco
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByUsername(username)
                 .map(user -> org.springframework.security.core.userdetails.User.builder()
                         .username(user.getUsername())
                         .password(user.getPassword())
-                        .roles(user.getRole()) // ROLE_USER, ROLE_ADMIN
+                        .roles(user.getRole().toUpperCase()) // Adiciona "USER" ou "ADMIN"
                         .build())
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
     }
 
-    // 🔑 JWT Decoder com chave secreta
+    // 🔑 Configuração do decodificador JWT com HMAC SHA-256
     @Bean
     public JwtDecoder jwtDecoder() {
         SecretKeySpec secretKey = new SecretKeySpec(jwtSecret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
         return NimbusJwtDecoder.withSecretKey(secretKey).build();
     }
 
-    // 🔐 Configuração de segurança com proteção por JWT
+    // 🔐 Cadeia de filtros de segurança
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -73,17 +72,17 @@ public class SecurityConfig {
                     "/swagger-ui/**",
                     "/v3/api-docs/**",
                     "/h2-console/**",
-                    "/actuator/**" // Exposição das métricas
+                    "/actuator/**"
                 ).permitAll()
                 .anyRequest().authenticated()
             )
-            .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin())) // H2 console
-            .oauth2ResourceServer(oauth2 -> oauth2.jwt()); // Aplica o JwtDecoder
+            .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin())) // Acesso ao H2 Console
+            .oauth2ResourceServer(oauth2 -> oauth2.jwt()); // Usa o jwtDecoder
 
         return http.build();
     }
 
-    // 🧪 Criação de usuários de teste
+    // 🧪 Seed de dados: cria usuários "admin" e "user" no banco H2 ao iniciar
     @Bean
     public CommandLineRunner initData(PasswordEncoder passwordEncoder) {
         return args -> {

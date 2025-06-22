@@ -26,8 +26,8 @@ spring:
 
 # 🔐 Configuração de Segurança (JWT + Spring Security)
 jwt:
-  secret: umaChaveSecretaMuitoLongaEComplexaParaAssinarTokensJWT # Mín. 32 caracteres
-  expiration: 3600000 # 1h em milissegundos
+  secret: suaChaveUltraSecretaJWTMinimo32Caracteres
+  expiration: 3600000 # 1 hora
 
   spring:
    security:
