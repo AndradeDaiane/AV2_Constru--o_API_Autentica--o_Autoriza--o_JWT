@@ -40,9 +40,15 @@ jwt:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
-    disable-swagger-default-url: true
+    operationsSorter: method
   api-docs:
     path: /v3/api-docs
+  default-produces-media-type: application/json
+
+# Para ativar o JWT no Swagger
+springdoc.swagger-ui.oauth:
+  client-id: dummy
+  client-secret: dummy
 
 # 🛠️ DevTools
 
