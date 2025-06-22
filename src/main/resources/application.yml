@@ -2,7 +2,7 @@
 
 # 🚀 Configurações do Servidor Web
 server:
-  port: 8080 # Porta padrão da API
+  port: 8080
 
 # 🗄️ Configurações do Banco de Dados (H2)
 spring:
@@ -14,7 +14,7 @@ spring:
   h2:
     console:
       enabled: true
-      path: /h2-console # http://localhost:8080/h2-console
+      path: /h2-console
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
@@ -24,19 +24,24 @@ spring:
       hibernate:
         format_sql: true
 
-# 🔐 Configuração de Segurança (JWT + Spring Security)
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          secret-key: ${jwt.secret} # Refere-se à chave definida abaixo
+
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+
+# 🔐 JWT
 jwt:
   secret: suaChaveUltraSecretaJWTMinimo32Caracteres
   expiration: 3600000 # 1 hora
 
-  spring:
-   security:
-    oauth2:
-      resourceserver:
-        jwt:
-          secret-key: ${jwt.secret}
-
-# 📚 Documentação Swagger (Springdoc OpenAPI)
+# 📚 Swagger / Springdoc OpenAPI
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
@@ -49,15 +54,6 @@ springdoc:
 springdoc.swagger-ui.oauth:
   client-id: dummy
   client-secret: dummy
-
-# 🛠️ DevTools
-
-  spring:
-    devtools:
-    restart:
-      enabled: true
-    livereload:
-      enabled: true
 
 # 🩺 Actuator - Monitoramento e Métricas
 management:
