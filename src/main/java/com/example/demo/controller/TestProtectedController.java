@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestControllerSwaggerConfig.java
+@RestController
 @RequestMapping("/api")
 @Tag(name = "Recursos Protegidos", description = "Endpoints que exigem autenticação JWT")
 @SecurityRequirement(name = "bearerAuth") // Swagger exige JWT via Authorization header
