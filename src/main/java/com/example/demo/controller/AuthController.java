@@ -46,7 +46,8 @@ public class AuthController {
     @Operation(summary = "Registro de novo usuário")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Usuário registrado com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos")
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "500", description = "Erro interno ao registrar o usuário")
     })
     @PostMapping("/register")
     public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request) {
