@@ -24,7 +24,7 @@ public class SwaggerConfig {
                 .description("API para autenticação, geração e validação de tokens JWT. Ideal para microsserviços com autenticação centralizada.")
                 .termsOfService("https://swagger.io/terms/")
                 .contact(new Contact()
-                    .name("Seu Nome ou Equipe")
+                    .name("Daiane - Newton Paiva")
                     .email("seu.email@example.com"))
                 .license(new License()
                     .name("Apache 2.0")
