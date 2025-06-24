@@ -2,6 +2,7 @@ package com.example.demo;
 
 import com.example.demo.dto.AuthRequest;
 import com.example.demo.model.User;
+import com.example.demo.model.UserRole;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,8 +34,8 @@ class AuthIntegrationTests {
     void setup() {
         userRepository.deleteAll(); // Limpa o banco para testes repetitivos
 
-        userRepository.save(new User(null, "admin", passwordEncoder.encode("123456"), "ADMIN"));
-        userRepository.save(new User(null, "user", passwordEncoder.encode("password"), "USER"));
+        userRepository.save(new User(null, "admin", passwordEncoder.encode("123456"), UserRole.ADMIN));
+        userRepository.save(new User(null, "user", passwordEncoder.encode("password"), UserRole.USER));
     }
 
     @Test

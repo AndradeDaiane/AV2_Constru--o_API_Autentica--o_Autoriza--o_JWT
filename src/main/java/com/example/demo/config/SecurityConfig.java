@@ -1,6 +1,7 @@
 package com.example.demo.config;
 
 import com.example.demo.model.User;
+import com.example.demo.model.UserRole;
 import com.example.demo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,7 +47,7 @@ public class SecurityConfig {
                 .map(user -> org.springframework.security.core.userdetails.User.builder()
                         .username(user.getUsername())
                         .password(user.getPassword())
-                        .roles(user.getRole().toUpperCase()) // Adiciona "USER" ou "ADMIN"
+                        .roles(user.getRole().name()) // Usa enum.name() para obter "USER"/"ADMIN"
                         .build())
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
     }
@@ -87,13 +88,14 @@ public class SecurityConfig {
     public CommandLineRunner initData(PasswordEncoder passwordEncoder) {
         return args -> {
             if (userRepository.findByUsername("admin").isEmpty()) {
-                userRepository.save(new User(null, "admin", passwordEncoder.encode("123456"), "ADMIN"));
+                userRepository.save(new User(null, "admin", passwordEncoder.encode("123456"), UserRole.ADMIN));
                 System.out.println("✅ Usuário 'admin' criado.");
             }
             if (userRepository.findByUsername("user").isEmpty()) {
-                userRepository.save(new User(null, "user", passwordEncoder.encode("password"), "USER"));
+                userRepository.save(new User(null, "user", passwordEncoder.encode("password"), UserRole.USER));
                 System.out.println("✅ Usuário 'user' criado.");
             }
         };
     }
 }
+

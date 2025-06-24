@@ -55,6 +55,7 @@ springdoc.swagger-ui.oauth:
   client-id: dummy
   client-secret: dummy
 
+
 # 🩺 Actuator - Monitoramento e Métricas
 management:
   endpoints:

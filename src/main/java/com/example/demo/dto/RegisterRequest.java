@@ -1,7 +1,8 @@
 package com.example.demo.dto;
 
-
+import com.example.demo.model.UserRole;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -13,8 +14,7 @@ public class RegisterRequest {
     @NotBlank(message = "A senha é obrigatória")
     private String password;
 
-    @NotBlank(message = "A role é obrigatória")
-    // Role padrão para novos usuários (pode ser "USER", "ADMIN", etc.)
-    // Você pode deixar sem @NotBlank, pois já tem valor padrão, mas pode adicionar se desejar validação explícita.
-    private String role = "USER";
+    @NotNull(message = "A role é obrigatória")
+    private UserRole role = UserRole.USER; // Agora é do tipo enum UserRole com valor padrão USER
+
 }
