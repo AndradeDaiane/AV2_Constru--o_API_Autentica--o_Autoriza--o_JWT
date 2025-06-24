@@ -6,24 +6,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users") // Evita conflitos com tabelas reservadas
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false, length = 50)
+    @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING) // Armazena o nome do enum ("USER", "ADMIN")
-    @Column(nullable = false, length = 20)
-    private UserRole role;
+    @Column(nullable = false)
+    private String role; // Ex: "USER", "ADMIN"
 }

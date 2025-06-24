@@ -30,7 +30,7 @@
 		<java.version>24</java.version>
 	</properties>
 <dependencies>
-    <!-- 🌐 API REST -->
+    <!-- 🌐 Web API -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
@@ -42,19 +42,26 @@
       <artifactId>spring-boot-starter-security</artifactId>
     </dependency>
 
-    <!-- 🔑 JWT Token -->
+    <!-- 🔑 JWT - OAuth2 (necessário para validar JWT no Spring Security) -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
     </dependency>
 
-    <!-- 🗄️ JPA e Banco de Dados -->
+    <!-- 🔐 Biblioteca Java JWT (Auth0) - Geração e validação de tokens -->
+    <dependency>
+      <groupId>com.auth0</groupId>
+      <artifactId>java-jwt</artifactId>
+      <version>4.4.0</version>
+    </dependency>
+
+    <!-- 🗄️ JPA / Hibernate -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
 
-    <!-- 💾 H2 - Banco em memória -->
+    <!-- 💾 Banco de dados H2 (em memória) -->
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
@@ -68,7 +75,7 @@
       <version>2.5.0</version>
     </dependency>
 
-    <!-- 🛠️ DevTools -->
+    <!-- 🛠️ DevTools (auto reload) -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-devtools</artifactId>
@@ -76,14 +83,14 @@
       <optional>true</optional>
     </dependency>
 
-    <!-- 🍬 Lombok -->
+    <!-- 🍬 Lombok (anotações para reduzir boilerplate) -->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <optional>true</optional>
     </dependency>
 
-    <!-- ✅ Testes com JUnit e Mockito -->
+    <!-- ✅ Testes -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
@@ -141,5 +148,4 @@
       </plugin>
     </plugins>
   </build>
-
 </project>
