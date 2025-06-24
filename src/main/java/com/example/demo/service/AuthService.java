@@ -1,12 +1,11 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.RegisterRequest;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -24,8 +23,8 @@ public class AuthService {
     /**
      * Autentica o usuário e gera um token JWT se as credenciais forem válidas.
      *
-     * @param username     Nome de usuário
-     * @param rawPassword  Senha em texto plano
+     * @param username    Nome de usuário
+     * @param rawPassword Senha em texto plano
      * @return Token JWT
      * @throws BadCredentialsException Se usuário não existir ou senha estiver incorreta
      */
@@ -39,5 +38,25 @@ public class AuthService {
 
         return jwtService.generateToken(user.getUsername(), user.getRole());
     }
+
+    /**
+     * Registra um novo usuário no sistema, com role padrão USER (se não especificado).
+     *
+     * @param request Objeto contendo username, senha e role (opcional)
+     * @throws IllegalArgumentException se o username já estiver em uso
+     */
+    public void register(RegisterRequest request) {
+        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+            throw new IllegalArgumentException("Nome de usuário já está em uso.");
+        }
+
+        User user = new User();
+        user.setUsername(request.getUsername());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(request.getRole() != null ? request.getRole().toUpperCase() : "USER");
+
+        userRepository.save(user);
+    }
 }
+
 

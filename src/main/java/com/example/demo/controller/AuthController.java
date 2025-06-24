@@ -37,22 +37,30 @@ public class AuthController {
             String token = authService.authenticateUserAndGenerateToken(request.getUsername(), request.getPassword());
             return ResponseEntity.ok(new AuthResponse(token));
         } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new AuthResponse("Credenciais inválidas."));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new AuthResponse("Erro interno ao realizar login."));
         }
     }
 
     @Operation(summary = "Registro de novo usuário")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Usuário registrado com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "400", description = "Nome de usuário já existe"),
         @ApiResponse(responseCode = "500", description = "Erro interno ao registrar o usuário")
     })
     @PostMapping("/register")
     public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request) {
-        authService.register(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Usuário registrado com sucesso.");
+        try {
+            authService.register(request);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Usuário registrado com sucesso.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao registrar o usuário.");
+        }
     }
 
     @Operation(summary = "Valida um token JWT e retorna o username associado")
